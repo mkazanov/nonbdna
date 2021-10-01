@@ -31,8 +31,11 @@ for(s in structures)
 {
 #      dt <- rbind(data[isAPOBEC == 1 & structure == s & enrichment > 2.0],
 #                  data[isAPOBEC == 0 & structure == s & enrichment <= 2.0])
-        dt <- rbind(data[isAPOBEC == 1 & structure == s],
-                    data[isAPOBEC == 1 & structure == s])
+        #dt <- rbind(data[isAPOBEC == 1 & structure == s],
+        #            data[isAPOBEC == 1 & structure == s])
+  
+        dt <- data[isAPOBEC == 1 & structure == s]
+  
         dt[enrichment > 2.0, isEnriched := 1]
         dt[enrichment <= 2.0, isEnriched := 0]
         
@@ -58,7 +61,7 @@ for(s in structures)
               axis.line.y = element_line(color="black"),
               panel.grid.major.y = element_line(size = rel(0.5), colour='grey92'),
               legend.position = "none") +
-        geom_vline(xintercept=c(0.5,1.5,2.5,3.5,4.5),color="grey92")
+        geom_vline(xintercept=c(0.5,1.5,2.5,3.5,4.5,5.5),color="grey92")
       
       
       

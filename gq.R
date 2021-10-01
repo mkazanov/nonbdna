@@ -111,8 +111,8 @@ dtboxpLow <- dtboxp[enrichment < 2.0]
 ggplot(dtboxpHigh, aes(x=cancer,y=value,fill=variable,color=variable)) +
   #    ggplot(dtm, aes(x=cancer,y=value,fill=isAPOBEC,color=isAPOBEC)) +
   geom_boxplot(position=position_dodge(1))  +
-  scale_fill_manual(name= "Clarity", values = c("#c78ba9", "#edd585")) +
-  scale_color_manual(name = "Clarity", values = c("#a3567c", "#e9c44a")) +
+  scale_fill_manual(name= "Clarity", values = c(rgb(118,184,174,maxColorValue = 255), rgb(229,115,161,maxColorValue = 255))) +
+  scale_color_manual(name = "Clarity", values = c(rgb(119,172,166,maxColorValue = 255), rgb(203,73,123,maxColorValue = 255))) +
   geom_hline(yintercept = 0) +
   theme(panel.background = element_blank(),
         axis.title.x = element_blank(),
@@ -120,17 +120,17 @@ ggplot(dtboxpHigh, aes(x=cancer,y=value,fill=variable,color=variable)) +
         axis.line.x = element_blank(),
         axis.ticks.x=element_blank(),
         axis.line.y = element_line(color="black"),
-        panel.grid.major.y = element_line(size = rel(0.5), colour='grey92'),
-        legend.position = "none") +
-  geom_vline(xintercept=c(0.5,1.5,2.5,3.5,4.5),color="grey92")
+        panel.grid.major.y = element_line(size = rel(0.5), colour='grey92'))#,
+       # legend.position = "none") +
+  geom_vline(xintercept=c(0.5,1.5,2.5,3.5,4.5,5.5),color="grey92")
 
 ggsave(paste0("/Users/mar/BIO/PROJECTS/APOBEC/NONBDNA/Denek_GQ/pics/gqHigh.tiff"),units="mm",dpi=300,width=125,height=80)
 
 ggplot(dtboxpLow, aes(x=cancer,y=value,fill=variable,color=variable)) +
   #    ggplot(dtm, aes(x=cancer,y=value,fill=isAPOBEC,color=isAPOBEC)) +
   geom_boxplot(position=position_dodge(1))  +
-  scale_fill_manual(name= "Clarity", values = c("#c78ba9", "#edd585")) +
-  scale_color_manual(name = "Clarity", values = c("#a3567c", "#e9c44a")) +
+  scale_fill_manual(name= "Clarity", values = c(rgb(118,184,174,maxColorValue = 255), rgb(229,115,161,maxColorValue = 255))) +
+  scale_color_manual(name = "Clarity", values = c(rgb(119,172,166,maxColorValue = 255), rgb(203,73,123,maxColorValue = 255))) +
   geom_hline(yintercept = 0) +
   theme(panel.background = element_blank(),
         axis.title.x = element_blank(),
@@ -140,7 +140,7 @@ ggplot(dtboxpLow, aes(x=cancer,y=value,fill=variable,color=variable)) +
         axis.line.y = element_line(color="black"),
         panel.grid.major.y = element_line(size = rel(0.5), colour='grey92'),
         legend.position = "none") +
-  geom_vline(xintercept=c(0.5,1.5,2.5,3.5,4.5),color="grey92")
+  geom_vline(xintercept=c(0.5,1.5,2.5,3.5,4.5,5.5),color="grey92")
 
 ggsave(paste0("/Users/mar/BIO/PROJECTS/APOBEC/NONBDNA/Denek_GQ/pics/gqLow.tiff"),units="mm",dpi=300,width=125,height=80)
 
@@ -167,6 +167,8 @@ for(canc in c("BLCA","BRCA","HNSC","CESC","LUAD","LUSC")){
  dt4 <- dtpctNT_copy[cancer == canc]
  
  ggplot(dt4, aes(x=sampleEnrich,y=pct,fill=variable)) + geom_bar(position="fill", stat="identity") +
+   scale_fill_manual(values = c(rgb(118,184,174,maxColorValue = 255), rgb(229,115,161,maxColorValue = 255))) +
+  # scale_color_manual(values = c(rgb(119,172,166,maxColorValue = 255), rgb(203,73,123,maxColorValue = 255))) +
    theme(axis.text.x = element_blank(),
          panel.background = element_blank(),
          legend.position = "none",

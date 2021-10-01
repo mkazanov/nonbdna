@@ -18,6 +18,11 @@ activity <- data.table(activity)
 setnames(activity,c("project","sample","enrichment"))
 
 data <- merge(data,activity,by="sample",all.x = TRUE)
+data[, densityIn := cntIn / trgIn]
+data[, densityOut := cntOut / trgOut]
+data[, densRatio := densityIn/densityOut]
+
+data[enrichment >= 2.0 & structure == "dr", min(densityIn/densityOut)]
 
 nonAnonS <- copy(data)
 nonAnonS <- nonAnonS[isAPOBEC==0]
@@ -50,6 +55,8 @@ cancers <- unique(data$cancer)
 
 plots <- list()
 
+dt <- dt[!is.na(enrichment)]
+
 i <- 1
 for(s in structures)
 {
@@ -59,19 +66,34 @@ for(s in structures)
       dt2[,sampleEnrich := paste0(sample,'__',round(enrichment,2))]
       sampleLevels <- unique(dt2[order(enrichment),sampleEnrich])
       dt2$sampleEnrich <- factor(dt2$sampleEnrich,levels=sampleLevels)
+      dt2$enrichment <- as.factor(as.character(round(dt2$enrichment,2)))
       
-      p <- ggplot(dt2,aes(x=sampleEnrich,y=cnt/trg,fill=type)) + geom_bar(stat="identity",position="dodge") +
+      p <- ggplot(dt2,aes(x=enrichment,y=cnt/trg,fill=type)) + geom_bar(stat="identity",position="dodge") +
         theme(panel.background = element_blank(),
-              axis.text.x = element_blank(),
+              axis.text.x = element_text(size=8),
               axis.title = element_blank(),
               axis.line = element_line(color="black"),
-              legend.position = "bottom") +
+              legend.position = "none") +
         scale_fill_manual(values=c(rgb(203,73,123,maxColorValue = 255), 
                                    rgb(161,201,171,maxColorValue = 255), 
                                    rgb(242,234,102,maxColorValue = 255),
                                    rgb(139,197,229,maxColorValue = 255)))
       
-        ggsave(paste0("/Users/mar/BIO/PROJECTS/APOBEC/NONBDNA/pics/fig2/c/",s,"_",c,"_.jpg"),plot=p,width=220,height=50,units="mm",dpi=300)
+      
+      if(c %in% c("BLCA","CESC"))
+         wd <- 150
+      else if(c == "BRCA")
+         wd <- 450
+      else if(c == "HNSC")
+        wd <- 300
+      else if(c == "LUAD")
+        wd <- 250
+      else if(c == "LUSC")
+        wd <- 300
+      else
+        wd <- 150
+        
+        ggsave(paste0("/Users/mar/BIO/PROJECTS/APOBEC/NONBDNA/pics/fig2/c/",s,"_",c,"_.tiff"),plot=p,width=wd,height=50,units="mm",dpi=300)
       
       plots[[i]] <- as.grob(p)  
       i <- i + 1
